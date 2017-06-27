@@ -54,11 +54,17 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="BasicTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Submissions\DavidGreen.cs" />
+    <Compile Include="Submissions\DavidMaman.cs" />
+    <Compile Include="Submissions\JoeRohde.cs" />
+    <Compile Include="Submissions\NathanHaase.cs" />
+    <Compile Include="Submissions\VladLaypa.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="data.json" />
+    <EmbeddedResource Include="hugedata.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <Choose>
