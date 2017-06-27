@@ -56,9 +56,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\UnitTestProject1\UnitTestProject1.csproj">
+    <ProjectReference Include="..\UnitTestProject1\ClassScheduleChallenge.csproj">
       <Project>{d47267ee-6ae3-4751-b578-7b8af14fe3c0}</Project>
-      <Name>UnitTestProject1</Name>
+      <Name>ClassScheduleChallenge</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

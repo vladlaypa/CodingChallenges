@@ -12,14 +12,25 @@ namespace ClassSchedule
     [TestClass]
     public partial class BasicTest
     {
+        private bool CanGraduate(int numAllCourses, List<Tuple<int, int>> prerequisites)
+        {
+            return CanGraduate_DavidMaman(numAllCourses, prerequisites);
+            //return CanGraduate_JoseArroyo(numAllCourses, prerequisites);
+            //return CanGraduate_DavidGreen(numAllCourses, prerequisites);
+            //return CanGraduate_JoeRohde(numAllCourses, prerequisites);
+            //return CanGraduate_NathanHaase(numAllCourses, prerequisites);
+            //return CanGraduate_VladLaypa(numAllCourses, prerequisites);
+        }
+
+
         [TestMethod]
-        public void StressTest()
+        public void AvgTimeTest()
         {
             var result = true;
-            const long numTests = 1000;
+            const double numTests = 1000;
 
             var stopwatch = new Stopwatch();
-            var testResults = new List<long>();
+            var testResults = new List<double>();
             for (var i = 0; i < numTests; i++)
             {
                 const int numClasses = 512;
@@ -31,13 +42,10 @@ namespace ClassSchedule
                     var fileString = reader.ReadToEnd();
 
                     courses = JsonConvert.DeserializeObject<List<Tuple<int, int>>>(fileString);
-                    //Debug.WriteLine($"{numClasses} courses...");
-                    //Debug.WriteLine($"{courses.Count} prerequisites....");
                 }
 
-
                 stopwatch.Restart();
-                if (!CanGraduate_JoeRohde(numClasses, courses))
+                if (!CanGraduate(numClasses, courses))
                     result = false;
                 stopwatch.Stop();
                 testResults.Add(stopwatch.ElapsedMilliseconds);
@@ -46,7 +54,6 @@ namespace ClassSchedule
             Assert.IsTrue(result);
             Debug.WriteLine($"Avg. time: {testResults.Sum() / numTests} ms for {numTests} runs;");
         }
-
 
         //[TestMethod]
         //public void HugeDataset()
@@ -65,21 +72,30 @@ namespace ClassSchedule
 
 
         //    stopwatch.Start();
-        //    if (!CanGraduate_NathanHaase(100000, courses))
+        //    if (!CanGraduate(100000, courses))
         //        result = false;
         //    stopwatch.Stop();
 
         //    Assert.IsTrue(result);
         //    Debug.WriteLine($"time: {stopwatch.ElapsedMilliseconds} ms.");
         //}
-
-
+        
         [TestMethod]
         public void BasicTestWithOnePrereq()
         {
-            Assert.IsTrue(CanGraduate_JoeRohde(2, new List<Tuple<int, int>>
+            Assert.IsTrue(CanGraduate(2, new List<Tuple<int, int>>
             {
                 new Tuple<int, int>(101, 206)
+            }));
+        }
+
+        [TestMethod]
+        public void NoNeedToTakeAnyClasses()
+        {
+            Assert.IsTrue(CanGraduate(0, new List<Tuple<int, int>>
+            {
+                new Tuple<int, int>(101, 206),
+                new Tuple<int, int>(206, 101)
             }));
         }
 
@@ -89,7 +105,7 @@ namespace ClassSchedule
         [TestMethod]
         public void CircularReferenceTest()
         {
-            Assert.IsFalse(CanGraduate_JoeRohde(1, new List<Tuple<int, int>>
+            Assert.IsFalse(CanGraduate(1, new List<Tuple<int, int>>
             {
                 new Tuple<int, int>(101, 206),
                 new Tuple<int, int>(206, 101)
@@ -102,9 +118,9 @@ namespace ClassSchedule
         //105 and 106 are both possible because they have no prerequisites, 
         //and since both can be completed so can 211. So it is Possible
         [TestMethod]
-        public void HaveToComplete3outOf5()
+        public void HaveToComplete3OutOf5()
         {
-            Assert.IsTrue(CanGraduate_JoeRohde(3, new List<Tuple<int, int>>
+            Assert.IsTrue(CanGraduate(3, new List<Tuple<int, int>>
             {
                 new Tuple<int, int>(101, 206),
                 new Tuple<int, int>(206, 101),
@@ -117,7 +133,7 @@ namespace ClassSchedule
         [TestMethod]
         public void DuplicatePrereqs()
         {
-            Assert.IsTrue(CanGraduate_JoeRohde(3, new List<Tuple<int, int>>
+            Assert.IsTrue(CanGraduate(3, new List<Tuple<int, int>>
             {
                 new Tuple<int, int>(101, 206),
                 new Tuple<int, int>(206, 101),
@@ -134,7 +150,7 @@ namespace ClassSchedule
         [TestMethod]
         public void AsktoComplete5butOnly3available()
         {
-            Assert.IsFalse(CanGraduate_JoeRohde(5, new List<Tuple<int, int>>
+            Assert.IsFalse(CanGraduate(5, new List<Tuple<int, int>>
             {
                 new Tuple<int, int>(101, 206),
                 new Tuple<int, int>(206, 101),
@@ -147,12 +163,11 @@ namespace ClassSchedule
             }));
         }
 
-
         //not enough coures left
         [TestMethod]
         public void TestEnoughPrereqs()
         {
-            Assert.IsFalse(CanGraduate_JoeRohde(7, new List<Tuple<int, int>>
+            Assert.IsFalse(CanGraduate(7, new List<Tuple<int, int>>
             {
                 new Tuple<int, int>(1, 2),
                 new Tuple<int, int>(3, 4),
@@ -163,7 +178,7 @@ namespace ClassSchedule
         [TestMethod]
         public void HasZerosAndNegatives()
         {
-            Assert.IsTrue(CanGraduate_JoeRohde(3, new List<Tuple<int, int>>
+            Assert.IsTrue(CanGraduate(3, new List<Tuple<int, int>>
             {
                 new Tuple<int, int>(-1, 2),
                 new Tuple<int, int>(3, 4),
