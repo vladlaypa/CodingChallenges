@@ -15,6 +15,7 @@ namespace ClassSchedule
         private bool CanGraduate(int numAllCourses, List<Tuple<int, int>> prerequisites)
         {
             return CanGraduate_Dorota(numAllCourses, prerequisites);
+            //return CanGraduate_MichaelMoore(numAllCourses, prerequisites);
             //return CanGraduate_DavidMaman(numAllCourses, prerequisites);
             //return CanGraduate_JoseArroyo(numAllCourses, prerequisites);
             //return CanGraduate_DavidGreen(numAllCourses, prerequisites);
