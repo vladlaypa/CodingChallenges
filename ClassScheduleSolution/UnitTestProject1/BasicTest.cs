@@ -14,7 +14,8 @@ namespace ClassSchedule
     {
         private bool CanGraduate(int numAllCourses, List<Tuple<int, int>> prerequisites)
         {
-            return CanGraduate_DavidMaman(numAllCourses, prerequisites);
+            return CanGraduate_Dorota(numAllCourses, prerequisites);
+            //return CanGraduate_DavidMaman(numAllCourses, prerequisites);
             //return CanGraduate_JoseArroyo(numAllCourses, prerequisites);
             //return CanGraduate_DavidGreen(numAllCourses, prerequisites);
             //return CanGraduate_JoeRohde(numAllCourses, prerequisites);
@@ -165,7 +166,7 @@ namespace ClassSchedule
 
         //not enough coures left
         [TestMethod]
-        public void TestEnoughPrereqs()
+        public void ShouldntPassNotEnoughClasses()
         {
             Assert.IsFalse(CanGraduate(7, new List<Tuple<int, int>>
             {

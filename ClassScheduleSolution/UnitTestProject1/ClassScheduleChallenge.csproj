@@ -61,6 +61,7 @@
     <Compile Include="Submissions\JoeRohde.cs" />
     <Compile Include="Submissions\JoseArroyo.cs" />
     <Compile Include="Submissions\NathanHaase.cs" />
+    <Compile Include="Submissions\Dorota.cs" />
     <Compile Include="Submissions\VladLaypa.cs" />
   </ItemGroup>
   <ItemGroup>
