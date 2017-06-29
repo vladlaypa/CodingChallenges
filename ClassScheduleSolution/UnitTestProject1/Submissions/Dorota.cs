@@ -17,6 +17,11 @@ namespace ClassSchedule
                 return true;
             }
 
+            if (numAllCourses < 0)
+            {
+                return false; //making sure you get good parameters
+            }
+
             //If all the classes only show up once, you have a line, or a bunch of little ones
             List<int> classes = new List<int>();
             foreach (var prereq in prerequisites)
@@ -25,7 +30,7 @@ namespace ClassSchedule
                 classes.Add(prereq.Item2);
             }
 
-            if (classes.ToList().Distinct().Count() == classes.ToList().Count)
+            if (classes.ToList().Distinct().Count() == classes.ToList().Count && classes.ToList().Distinct().Count() >= numAllCourses)
             {
                 return true;
             }
@@ -34,7 +39,6 @@ namespace ClassSchedule
             {
                 return false;
             }
-
 
             foreach (Tuple<int, int> t in prerequisites)
             {
