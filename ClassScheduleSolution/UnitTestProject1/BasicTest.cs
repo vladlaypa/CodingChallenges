@@ -15,7 +15,7 @@ namespace ClassSchedule
         private bool CanGraduate(int numAllCourses, List<Tuple<int, int>> prerequisites)
         {
             return CanGraduate_Dorota(numAllCourses, prerequisites);
-            //return CanGraduate_MichaelMoore(numAllCourses, prerequisites);
+            //return CanGraduate_NikkiHunn(numAllCourses, prerequisites);
             //return CanGraduate_DavidMaman(numAllCourses, prerequisites);
             //return CanGraduate_JoseArroyo(numAllCourses, prerequisites);
             //return CanGraduate_DavidGreen(numAllCourses, prerequisites);
@@ -24,18 +24,17 @@ namespace ClassSchedule
             //return CanGraduate_VladLaypa(numAllCourses, prerequisites);
         }
 
-
         [TestMethod]
         public void AvgTimeTest()
         {
             var result = true;
-            const double numTests = 1000;
+            const double numTests = 5;
 
             var stopwatch = new Stopwatch();
             var testResults = new List<double>();
             for (var i = 0; i < numTests; i++)
             {
-                const int numClasses = 512;
+                const int numClasses = 24433;
                 List<Tuple<int, int>> courses;
                 using (var stream = Assembly.GetExecutingAssembly()
                     .GetManifestResourceStream("ClassSchedule.data.json"))
@@ -45,6 +44,8 @@ namespace ClassSchedule
 
                     courses = JsonConvert.DeserializeObject<List<Tuple<int, int>>>(fileString);
                 }
+                //Debug.WriteLine($"{courses.Count} tuples given.");
+                //Debug.WriteLine($"{numClasses} courses to complete.");
 
                 stopwatch.Restart();
                 if (!CanGraduate(numClasses, courses))
@@ -54,7 +55,7 @@ namespace ClassSchedule
             }
 
             Assert.IsTrue(result);
-            Debug.WriteLine($"Avg. time: {testResults.Sum() / numTests} ms for {numTests} runs;");
+            Debug.WriteLine($"Avg. time: {testResults.Sum() / numTests} milliseconds for {numTests} runs;");
         }
 
         //[TestMethod]
@@ -81,7 +82,7 @@ namespace ClassSchedule
         //    Assert.IsTrue(result);
         //    Debug.WriteLine($"time: {stopwatch.ElapsedMilliseconds} ms.");
         //}
-        
+
         [TestMethod]
         public void BasicTestWithOnePrereq()
         {
@@ -150,7 +151,7 @@ namespace ClassSchedule
 
         //should fail since we are asking for 5 courses, should be 3 max
         [TestMethod]
-        public void AsktoComplete5butOnly3available()
+        public void AsktoComplete5ButOnly3Available()
         {
             Assert.IsFalse(CanGraduate(5, new List<Tuple<int, int>>
             {
@@ -191,9 +192,48 @@ namespace ClassSchedule
             }));
         }
 
+        [TestMethod]
+        public void TestWithMillionTuples()
+        {
+            var tuples = new List<Tuple<int, int>>();
+            // there is only one root course, #1, tons of circular refs here 
+            for (var x = 1; x < 1000; x++)
+            {
+                for (var y = 2; y <= 1000; y++)
+                {
+                    tuples.Add(new Tuple<int, int>(x, y));
+                }
+            }
 
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            Assert.IsFalse(CanGraduate(20000, tuples));
+            stopwatch.Stop();
+            Debug.WriteLine($"time: {stopwatch.ElapsedMilliseconds} ms.");
+        }
+
+        [TestMethod]
+        public void TestWithMillionTuplesPassOne()
+        {
+            var tuples = new List<Tuple<int, int>>();
+            // there is only one root course, #1, tons of circular refs here 
+            for (var x = 1; x < 1000; x++)
+            {
+                for (var y = 2; y <= 1000; y++)
+                {
+                    tuples.Add(new Tuple<int, int>(x, y));
+                }
+            }
+
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            Assert.IsTrue(CanGraduate(1, tuples));
+            stopwatch.Stop();
+            Debug.WriteLine($"time: {stopwatch.ElapsedMilliseconds} ms.");
+        }
+        
         //[TestMethod]
-        //public void HasZejhgfhgjfrosAndNegatives()
+        //public void GenerateShitTonOfClasses()
         //{
         //    GenerateClasses();
         //    Assert.IsTrue(true);
@@ -206,7 +246,7 @@ namespace ClassSchedule
         /// <returns></returns>
         private string GenerateClasses()
         {
-            int numofClasses = 500000;
+            int numofClasses = 50000;
             var classes = new HashSet<Tuple<int, int>>();
 
             var rng = new Random();
